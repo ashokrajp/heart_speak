@@ -38,6 +38,7 @@ var services =
   getGeminiChatListing: function (request, login_user_id, callback) {
     console.log("------------re", request);
     console.log("------------login_user_id", login_user_id);
+    console.log("------------login_user_id", login_user_id);
     common.common_Multipleselect(`SELECT 
     c.id,
     c.user_id,
