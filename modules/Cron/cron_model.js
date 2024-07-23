@@ -10,7 +10,7 @@ const cron_model = {
     */
     checkDeleteChatHistory: function() {
         console.log("-------------------------");
-       con.query(`DELETE FROM tbl_chat_with_gemini c where created_at < NOW() `,function(err,result){
+       con.query(`DELETE FROM tbl_chat_with_gemini  where created_at < NOW() `,function(err,result){
         if (!err ) {
             console.log('Something went wrong on delete chat :',err);
 

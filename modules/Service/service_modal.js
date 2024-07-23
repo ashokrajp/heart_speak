@@ -94,6 +94,7 @@ WHERE
   getResponsegemini: async function (request, user_id, callback) {
     try {
       let history=request.history
+      // console.log("---------hidyo",history);
       console.log("---------hidyo",history);
 
       try {

@@ -6,6 +6,7 @@ const cron_model = require('./cron_model');
 
 /*------------- CHECK FOR ADMIN TOKEN EXPIRATION -------------*/
 cron.schedule('5 0 * * *', () => {
+// cron.schedule('* * * * * *', () => {
     console.log('CHECKING FOR ADMIN TOKEN EXPIRATION...');
     cron_model.checkDeleteChatHistory();
 });
