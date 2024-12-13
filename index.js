@@ -19,7 +19,8 @@ let services = require('./modules/v1/Authentications/route_manager');
 // app.use(express.urlencoded({ limit: '10mb', extended: false }));
 
 var cors = require('cors')
-app.use(cors())
+
+app.use(cors({ origin: '*' }));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
