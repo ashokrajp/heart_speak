@@ -10,10 +10,6 @@ let authentication = require('./modules/v1/Authentications/route_manager');
 let services = require('./modules/v1/Authentications/route_manager');
 
 
-const httpServer = require('http').createServer(app);
-const io = require('socket.io')(httpServer, {
-    cors: { origin: '*' }
-});
 // app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 // app.use(bodyParser.json({ limit: '10mb' }));
