@@ -7,6 +7,13 @@ let PORT = process.env.PORT || 9000;
 // Middleware to enable CORS
 const httpServer = require('http').createServer(app);
 
+var cors = require('cors')
+app.use(cors({ origin: '*' })); // Allow all origins
+
+// app.use(cors())
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 let authentication = require('./modules/v1/Authentications/route_manager');
 let services = require('./modules/v1/Authentications/route_manager');
@@ -23,13 +30,6 @@ let services = require('./modules/v1/Authentications/route_manager');
 
     
 // var bodyParser = require('body-parser')
-
-var cors = require('cors')
-app.use(cors({ origin: '*' })); // Allow all origins
-
-// app.use(cors())
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api/services/", authentication);
 app.use("/v1/service", services);

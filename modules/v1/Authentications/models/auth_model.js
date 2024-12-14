@@ -23,7 +23,7 @@ const {
   //   const genAI = new GoogleGenerativeAI(apiKey);
   
   const model = genAI.getGenerativeModel({
-    model: "gemini-1.5-pro",
+    model: "gemini-1.5-flash",
   });
   
   const generationConfig = {
@@ -465,23 +465,24 @@ const authModel = {
                     }
                 });
 
-
+                
                 if (result.response.candidates[0].finishReason == "LANGUAGE") {
                     if (request.language == 'hindi') {
                         text_response = "nai yaar mujhe nai aati 😟"
-
+                        
                     } else {
                         text_response = "no buddy i don't😟"
-
+                        
                     }
                 }
-
+                
                 var obj = {
                     user_id: req.user_id,
                     user_prompt: req.prompt,
                     text: text_response,
                     name: req.name
                 };
+                console.log("----------------------------------------------sdsd----------",text_response);
                 const newUser = new userModel(obj);
                 const response = await newUser.save();
                 if (response) {
