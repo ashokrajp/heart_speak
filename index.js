@@ -22,7 +22,7 @@ let services = require('./modules/v1/Authentications/route_manager');
 // ll
 
     
-var bodyParser = require('body-parser')
+// var bodyParser = require('body-parser')
 
 var cors = require('cors')
 app.use(cors())
