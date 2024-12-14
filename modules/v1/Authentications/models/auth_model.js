@@ -437,8 +437,7 @@ const authModel = {
 
                 });
                 console.log("---------------------------------------------------qwqwqw-----");
-                console.log("--------------------------------------------------------",chatSession.sendMessage(req.defult_prompt + req.prompt));
-
+                
                 const result = await chatSession.sendMessage(req.defult_prompt + req.prompt);
                 let splitted_text = result.response.text().split(' ');
                 
@@ -464,7 +463,7 @@ const authModel = {
                         text_response = result.response.text();
                     }
                 });
-
+                
                 
                 if (result.response.candidates[0].finishReason == "LANGUAGE") {
                     if (request.language == 'hindi') {
@@ -482,10 +481,10 @@ const authModel = {
                     text: text_response,
                     name: req.name
                 };
-                console.log("----------------------------------------------sdsd----------",text_response);
                 const newUser = new userModel(obj);
                 const response = await newUser.save();
                 if (response) {
+                    console.log("----------------------------------------------sdsd----------",text_response);
                     return middleware.sendResponse(res, Codes.SUCCESS, 'success', {text_response});
                 } else {
                     return middleware.sendResponse(res, Codes.INTERNAL_ERROR, 'Failed to update user status', null);
