@@ -5,6 +5,12 @@ const bodyParser = require('body-parser')
     
 let app = express();
 let PORT = process.env.PORT || 9000;
+// Middleware to enable CORS
+app.use(cors({
+    origin: 'https://hearspeak-frontend.onrender.com', // Allow only your frontend origin
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific HTTP methods
+    credentials: true, // Allow cookies if needed
+}));
 
 let authentication = require('./modules/v1/Authentications/route_manager');
 let services = require('./modules/v1/Authentications/route_manager');
