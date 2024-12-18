@@ -107,7 +107,7 @@ const logout = async (req, res) => {
 const checktoken = async (req, res) => {
     console.log("--------------------------------dghello",req.user_id);
     
-    const valid = await middleware.checkValidationRules(req.body, checkValidationRule.chatwithgemiAI);
+    const valid = await middleware.checkValidationRules(req.body);
 
     if (valid.status) {
         const request = {
