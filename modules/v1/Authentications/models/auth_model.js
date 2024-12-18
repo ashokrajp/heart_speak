@@ -298,6 +298,9 @@ const authModel = {
                 let param = {
                     token: token,
                 }
+
+                console.log("---------------findUserfindUser------------------",findUser);
+                
                 const updateUser = await userModel.findByIdAndUpdate(findUser._id, param, { new: true });
                 if (updateUser) {
                     return middleware.sendResponse(res, Codes.SUCCESS, 'Login successfully', updateUser);
@@ -433,13 +436,14 @@ const authModel = {
                         },
 
                     ],
-
-
+                    
+                    
                 });
                 console.log("---------------------------------------------------qwqwqw-----");
                 
                 const result = await chatSession.sendMessage(req.defult_prompt + req.prompt);
                 let splitted_text = result.response.text().split(' ');
+                console.log("-----------------------result-----------------------result----------",splitted_text);
                 
                 let keywords = [
                     'romantically suggestive',
@@ -470,21 +474,25 @@ const authModel = {
                         text_response = "nai yaar mujhe nai aati 😟"
                         
                     } else {
+                        
                         text_response = "no buddy i don't😟"
                         
                     }
                 }
                 
                 var obj = {
-                    user_id: req.user_id,
+                    user_id: "676289ce2d3a4bc7e5e59eb4",
                     user_prompt: req.prompt,
                     text: text_response,
                     name: req.name
                 };
-                const newUser = new userModel(obj);
+                console.log("-----------------------asrgderg-----------------------resposfgsfnse----------",obj);
+                const newUser = await chatModel(obj);
+                console.log(`$$$$$$$$$$$$$$$$$$$$$$$$$$`, newUser)
                 const response = await newUser.save();
+                console.log("-----------------------newUser-----------------------response----------",response);
+                
                 if (response) {
-                    console.log("----------------------------------------------sdsd----------",text_response);
                     return middleware.sendResponse(res, Codes.SUCCESS, 'success', {text_response});
                 } else {
                     return middleware.sendResponse(res, Codes.INTERNAL_ERROR, 'Failed to update user status', null);

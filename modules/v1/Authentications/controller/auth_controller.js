@@ -103,6 +103,8 @@ const forgotpassword = async (req, res) => {
 
 /*==================================================LOGIN======================================================*/
 const login = async (req, res) => {
+    console.log("----------------------");
+    
     const valid = await middleware.checkValidationRules(req.body, checkValidationRule.login);
     const request = {
         ...req.body,

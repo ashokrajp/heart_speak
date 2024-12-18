@@ -28,5 +28,5 @@ const chatWithGeminiSchema = mongoose.Schema({
 
 })
 
-const chatModel = mongoose.model('tbl_chat_with_gemini', chatWithGeminiSchema);
+const chatModel = mongoose.model('tbl_chat_with_geminis', chatWithGeminiSchema);
 module.exports = chatModel; 

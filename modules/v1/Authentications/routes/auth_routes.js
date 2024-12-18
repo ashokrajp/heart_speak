@@ -4,11 +4,11 @@ const router = express.Router();
 
 
 
-router.post('/singup', AuthController.singup)
-router.post('/otp-verification', AuthController.verifyotp)
-router.post('/resend-opt', AuthController.resendotp)
-router.post('/forgot-otp', AuthController.forgototp)
-router.post('/forgot-password', AuthController.forgotpassword)
+// router.post('/singup', AuthController.singup)
+// router.post('/otp-verification', AuthController.verifyotp)
+// router.post('/resend-opt', AuthController.resendotp)
+// router.post('/forgot-otp', AuthController.forgototp)
+// router.post('/forgot-password', AuthController.forgotpassword)
 
 //hear speak time ///
 router.post('/login', AuthController.login)
