@@ -67,7 +67,9 @@ const headerValidator = {
 
 
         try {
-            if (bypassMethod.indexOf(pathData[1]) === -1) {
+            console.log("-------------------------oatha pata",pathData);
+            
+            if (bypassMethod.indexOf(pathData[3]) === -1) {
                 let headtoken = req.headers['token'] || '';
 
                 headtoken = headtoken[0] === '"' ? headtoken.slice(1, -1) : headtoken;

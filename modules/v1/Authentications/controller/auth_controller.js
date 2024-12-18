@@ -127,7 +127,7 @@ const getGeminiChat = async (req, res) => {
 
 /*==================================================CHANGE PASSWORD======================================================*/
 const chatwithgemiAI = async (req, res) => {
-    console.log("--------------------------------dghello");
+    console.log("--------------------------------dghello",req.user_id);
     
     const valid = await middleware.checkValidationRules(req.body, checkValidationRule.chatwithgemiAI);
 

@@ -27,12 +27,13 @@ let services = require('./modules/v1/Authentications/route_manager');
 // app.use(express.json({ limit: '10mb' }));
 // app.use(express.urlencoded({ limit: '10mb', extended: false }));
 // ll
-
+app.use('/', require('./middleware/headerValidators').validateHeaderApiKey)
+app.use('/', require('./middleware/headerValidators').validateHeaderToken)
     
 // var bodyParser = require('body-parser')
 
 app.use("/api/services/", authentication);
-app.use("/v1/service", services);
+app.use("/v1/auth", services);
 
 
 httpServer.listen(process.env.PORT, () => console.log(`listening on port ${process.env.PORT}`));

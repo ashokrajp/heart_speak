@@ -14,25 +14,25 @@ const {
     GoogleGenerativeAI,
     HarmCategory,
     HarmBlockThreshold,
-  } = require("@google/generative-ai");
-  
-  const apiKey ='AIzaSyBd8IZ0LQKKhGb-GkncAhcJi51hrbsM5rI';
-  const genAI = new GoogleGenerativeAI(apiKey);
-  
-  //   const apiKey = process.env.GEMINI_API_KEY;
-  //   const genAI = new GoogleGenerativeAI(apiKey);
-  
-  const model = genAI.getGenerativeModel({
+} = require("@google/generative-ai");
+
+const apiKey = 'AIzaSyBd8IZ0LQKKhGb-GkncAhcJi51hrbsM5rI';
+const genAI = new GoogleGenerativeAI(apiKey);
+
+//   const apiKey = process.env.GEMINI_API_KEY;
+//   const genAI = new GoogleGenerativeAI(apiKey);
+
+const model = genAI.getGenerativeModel({
     model: "gemini-1.5-flash",
-  });
-  
-  const generationConfig = {
+});
+
+const generationConfig = {
     temperature: 0,
     topP: 1,
     topK: 1,
     maxOutputTokens: 2000,
     responseMimeType: "text/plain",
-  };
+};
 
 const authModel = {
 
@@ -282,49 +282,50 @@ const authModel = {
    =============================================================================================================================*/
     async login(req, res) {
         try {
-            const findUser = await userModel.findOne({
+            // const findUser = await userModel.findOne({
+            //     email: req.email,
+            // })
+
+            // if (findUser !== null && findUser !== undefined) {
+            const obj = {
                 email: req.email,
-            })
+                password: req.password,
+            };
 
-            if (!findUser) {
-                const obj = {
-                    email: req.email,
-                    password: req.password,
-                };
-
-                const newUser = new userModel(obj);
-                const response = await newUser.save();
-                let token = common.generateToken(32);
-                let param = {
-                    token: token,
-                }
-
-                console.log("---------------findUserfindUser------------------",findUser);
-                
-                const updateUser = await userModel.findByIdAndUpdate(findUser._id, param, { new: true });
-                if (updateUser) {
-                    return middleware.sendResponse(res, Codes.SUCCESS, 'Login successfully', updateUser);
-                } else {
-                    return middleware.sendResponse(res, Codes.INTERNAL_ERROR, 'Failed to update user status', null);
-                }
-                // return middleware.sendResponse(res, Codes.NOT_FOUND, 'User not found', null);
-            } else {
-                if (findUser.password == req.password) {
-                    let token = common.generateToken(32);
-                    let param = {
-                        token: token,
-                    }
-                    const updateUser = await userModel.findByIdAndUpdate(findUser._id, param, { new: true });
-                    if (updateUser) {
-                        return middleware.sendResponse(res, Codes.SUCCESS, 'Login successfully', updateUser);
-                    } else {
-                        return middleware.sendResponse(res, Codes.INTERNAL_ERROR, 'Failed to update user status', null);
-                    }
-                } else {
-                    return middleware.sendResponse(res, Codes.INTERNAL_ERROR, 'Failed to update user status', null);
-
-                }
+            const newUser = new userModel(obj);
+            const response = await newUser.save();
+            let token = common.generateToken(32);
+            let param = {
+                token: token,
             }
+            // console.log("---------------findUserfindUser------------------",response);
+            // return
+
+            const updateUser = await userModel.findByIdAndUpdate(response._id, param, { new: true });
+            if (updateUser) {
+                return middleware.sendResponse(res, Codes.SUCCESS, 'Login successfully', updateUser);
+            } else {
+                return middleware.sendResponse(res, Codes.INTERNAL_ERROR, 'Failed to update user status', null);
+            }
+            // return middleware.sendResponse(res, Codes.NOT_FOUND, 'User not found', null);
+            // } 
+            // else {
+            // if (findUser.password == req.password) {
+            //     let token = common.generateToken(32);
+            //     let param = {
+            //         token: token,
+            //     }
+            //     const updateUser = await userModel.findByIdAndUpdate(findUser._id, param, { new: true });
+            //     if (updateUser) {
+            //         return middleware.sendResponse(res, Codes.SUCCESS, 'Login successfully', updateUser);
+            //     } else {
+            //         return middleware.sendResponse(res, Codes.INTERNAL_ERROR, 'Failed to update user status', null);
+            //     }
+            // } else {
+            //     return middleware.sendResponse(res, Codes.INTERNAL_ERROR, 'Failed to update user status', null);
+
+            // }
+            // }
 
             // let password = cryptoLib.decrypt(findUser.password, shakey, process.env.IV);
             // if (password !== req.password) {
@@ -377,8 +378,8 @@ const authModel = {
                                                             CHANGE PASSWORD   
     =============================================================================================================================*/
     async chatwithgemiAI(req, res) {
-        console.log("-------------------re",req);
-        
+        console.log("-------------------re", req.userId);
+
         try {
             // let history=request.history
             // console.log("---------hidyo",history);
@@ -436,15 +437,15 @@ const authModel = {
                         },
 
                     ],
-                    
-                    
+
+
                 });
                 console.log("---------------------------------------------------qwqwqw-----");
-                
+
                 const result = await chatSession.sendMessage(req.defult_prompt + req.prompt);
                 let splitted_text = result.response.text().split(' ');
-                console.log("-----------------------result-----------------------result----------",splitted_text);
-                
+                console.log("-----------------------result-----------------------result----------", splitted_text);
+
                 let keywords = [
                     'romantically suggestive',
                     'cross personal boundaries',
@@ -455,7 +456,7 @@ const authModel = {
                     'sexually',
                     'derogatory'
                 ]
-                
+
                 let text_response = '';
                 let keyword_found = false;
                 keywords.forEach((keyword) => {
@@ -467,33 +468,33 @@ const authModel = {
                         text_response = result.response.text();
                     }
                 });
-                
-                
+
+
                 if (result.response.candidates[0].finishReason == "LANGUAGE") {
                     if (request.language == 'hindi') {
                         text_response = "nai yaar mujhe nai aati 😟"
-                        
+
                     } else {
-                        
+
                         text_response = "no buddy i don't😟"
-                        
+
                     }
                 }
-                
+
                 var obj = {
-                    user_id: "676289ce2d3a4bc7e5e59eb4",
+                    user_id: req.userId,
                     user_prompt: req.prompt,
                     text: text_response,
                     name: req.name
                 };
-                console.log("-----------------------asrgderg-----------------------resposfgsfnse----------",obj);
+                console.log("-----------------------asrgderg-----------------------resposfgsfnse----------", obj);
                 const newUser = await chatModel(obj);
                 console.log(`$$$$$$$$$$$$$$$$$$$$$$$$$$`, newUser)
                 const response = await newUser.save();
-                console.log("-----------------------newUser-----------------------response----------",response);
-                
+                console.log("-----------------------newUser-----------------------response----------", response);
+
                 if (response) {
-                    return middleware.sendResponse(res, Codes.SUCCESS, 'success', {text_response});
+                    return middleware.sendResponse(res, Codes.SUCCESS, 'success', { text_response });
                 } else {
                     return middleware.sendResponse(res, Codes.INTERNAL_ERROR, 'Failed to update user status', null);
                 }

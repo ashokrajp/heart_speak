@@ -111,8 +111,8 @@
 <?php
 
 $EncryptionMethod = 'AES-256-CBC';
-$secret = hash('sha256', 'xza548sa3vcr641b5ng5nhy9mlo64r6k');
-$iv = 'xza548sa3vcr641b';
+$secret = hash('sha256', 'a6dCT5vw95doyfBfv35NgOHoFYwoRXXR');
+$iv = 'a6dCT5vw95doyfBf';
 if (isset($_REQUEST['type']) && isset($_REQUEST['data']) && $_REQUEST['data'] != '') {
     if ($_REQUEST['type'] == 'Encrypt') {
         $plaintext = trim($_REQUEST['data']);
