@@ -370,10 +370,68 @@ const authModel = {
             return middleware.sendResponse(res, Codes.INTERNAL_ERROR, 'Something went wrong', error);
         }
     },
+    /*=============================================================================================================================
+                                                          VIEW PROFILE   
+    =============================================================================================================================*/
+    async check_token(req, res) {
+        try {
+            const chats = await chatModel.find({
+                token: req.token,
+            }).select({
+                id: 1,
+                token: 1,
+
+            });
+
+            if (!chats || chats.length === 0) {
+                // No chats found for the given criteria
+                return middleware.sendResponse(0, Codes.SUCCESS, 'No chats found', []);
+            }
+
+            // Return the chats
+            return middleware.sendResponse(res, Codes.SUCCESS, 'Chats retrieved successfully', chats);
+        } catch (error) {
+            console.log('error: ', error);
+            return middleware.sendResponse(0, Codes.INTERNAL_ERROR, 'Something went wrong', error);
+        }
+    },
+    /*=============================================================================================================================
+                                                          VIEW PROFILE   
+    =============================================================================================================================*/
+    async logOut(req, res) {
+        try {
+            const chats = await userModel.find({
+                id: req.login_user_id,
+            }).select({
+                id: 1,
+                token: 1,
+             
+            });
+
+            if (!chats || chats.length === 0) {
+                // No chats found for the given criteria
+                return middleware.sendResponse(res, Codes.SUCCESS, 'No chats found', []);
+            }
+            let param = {
+                token: '',
+            }
+            const updateUser = await userModel.findByIdAndUpdate(req.login_user_id, param, { new: true });
+            if (updateUser) {
+                return middleware.sendResponse(res, Codes.SUCCESS, 'logout successfully', updateUser);
+            } else {
+                return middleware.sendResponse(res, Codes.INTERNAL_ERROR, 'Failed ', null);
+            }
+            // Return the chats
+        } catch (error) {
+            console.log('error: ', error);
+            return middleware.sendResponse(res, Codes.INTERNAL_ERROR, 'Something went wrong', error);
+        }
+    },
 
 
 
 
+ 
     /*=============================================================================================================================
                                                             CHANGE PASSWORD   
     =============================================================================================================================*/
