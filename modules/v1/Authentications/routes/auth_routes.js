@@ -14,6 +14,6 @@ const router = express.Router();
 router.post('/login', AuthController.login)
 router.post('/getGeminiChat', AuthController.getGeminiChat)
 router.post('/chatwithgemiAI', AuthController.chatwithgemiAI)
-router.post('/logout', AuthController.logout)
+router.post('/log_out', AuthController.logout)
 router.post('/check_token', AuthController.checktoken)
 module.exports = router;
