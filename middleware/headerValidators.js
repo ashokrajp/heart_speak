@@ -54,57 +54,112 @@ const headerValidator = {
 
 
     //**************************************************************HEADER TOKEN***********************************************************************//
-    validateHeaderToken: async (req, res, next) => {
-        const bypassMethod = [
-            "otp-verification",
-            "resend-opt",
-            "forgot-otp",
-            "forgot-password",
-            "singup",
-            "login",
-        ];
-        const pathData = req.path.split("/");
+    // validateHeaderToken: async (req, res, next) => {
+    //     const bypassMethod = [
+    //         "otp-verification",
+    //         "resend-opt",
+    //         "forgot-otp",
+    //         "forgot-password",
+    //         "singup",
+    //         "login",
+    //     ];
+    //     const pathData = req.path.split("/");
 
 
-        try {
-            console.log("-------------------------oatha pata",pathData);
+    //     try {
+    //         console.log("-------------------------oatha pata",pathData);
             
-            if (bypassMethod.indexOf(pathData[3]) === -1) {
-                let headtoken = req.headers['token'] || '';
+    //         if (bypassMethod.indexOf(pathData[3]) === -1) {
+    //             let headtoken = req.headers['token'] || '';
 
-                headtoken = headtoken[0] === '"' ? headtoken.slice(1, -1) : headtoken;
+    //             headtoken = headtoken[0] === '"' ? headtoken.slice(1, -1) : headtoken;
 
-                if (headtoken) {
-                    try {
-                        const dec_token = await cryptoLib.decrypt(headtoken, shakey, process.env.IV);
+    //             if (headtoken) {
+    //                 try {
+    //                     const dec_token = await cryptoLib.decrypt(headtoken, shakey, process.env.IV);
 
-                        if (dec_token) {
-                            const userDetails = await userModel.findOne({ token: dec_token });
+    //                     if (dec_token) {
+    //                         const userDetails = await userModel.findOne({ token: dec_token });
 
-                            if (userDetails) {
-                                req.user_id = userDetails._id;
-                                return next();
-                            } else {
-                                return headerValidator.sendResponse(res, Codes.UNAUTHORIZED, 'INVALID TOKEN', null);
-                            }
+    //                         if (userDetails) {
+    //                             req.user_id = userDetails._id;
+    //                             return next();
+    //                         } else {
+    //                             return headerValidator.sendResponse(res, Codes.UNAUTHORIZED, 'INVALID TOKEN', null);
+    //                         }
+    //                     } else {
+    //                         return headerValidator.sendResponse(res, Codes.UNAUTHORIZED, 'INVALID TOKEN', null);
+    //                     }
+    //                 } catch (error) {
+    //                     return headerValidator.sendResponse(res, Codes.UNAUTHORIZED, 'TOKEN IS NOT VALID', null);
+    //                 }
+    //             } else {
+    //                 return headerValidator.sendResponse(res, Codes.UNAUTHORIZED, 'TOKEN NOT FOUND', null);
+    //             }
+    //         } else {
+    //             return next();
+    //         }
+    //     } catch (error) {
+    //         return headerValidator.sendResponse(res, Codes.INTERNAL_ERROR, 'An error occurred', null);
+    //     }
+    // },
+
+
+    validateHeaderToken: function (req, res, callback) {
+        var path_data = req.path.split("/");
+        // console.log(path_data,'sfdsf');
+        if (bypassMethod.indexOf(path_data[3]) === -1) {
+
+            if (req.headers['token'] && req.headers['token'] != '') {
+                // console.log(req.headers['token'], "tokedsddn");
+                // var headtoken = cryptoLib.decrypt(req.headers['token'], shaKey, GLOBALS.IV).replace(/\s/g, '');
+                var headtoken =  req.headers['token'] 
+                // console.log(headtoken, "token");
+                if (headtoken !== '') {
+                    con.query("SELECT * FROM tbl_user WHERE token = '" + headtoken + "' ", function (err, result) {
+                        console.log(this.sql,'this.s000000000');
+
+                        if (!err && result[0] != undefined) {
+                            req.login_user_id = result[0].id;
+                            req.login_user_type = result[0].user_type;
+                            req.language_select = (req.lang != undefined && req.lang != 'en') ? "_ar" : '';
+                            callback();
                         } else {
-                            return headerValidator.sendResponse(res, Codes.UNAUTHORIZED, 'INVALID TOKEN', null);
+                            headerValidator.sendresponse(req, res, 401, '-1', { keyword: 'rest_keywords_tokeninvalid', components: {} }, null);
                         }
-                    } catch (error) {
-                        return headerValidator.sendResponse(res, Codes.UNAUTHORIZED, 'TOKEN IS NOT VALID', null);
-                    }
+                    });
                 } else {
-                    return headerValidator.sendResponse(res, Codes.UNAUTHORIZED, 'TOKEN NOT FOUND', null);
+                    headerValidator.sendresponse(req, res, 401, '-1', { keyword: 'rest_keywords_tokeninvalid', components: {} }, null);
                 }
             } else {
-                return next();
+
+                headerValidator.sendresponse(req, res, 401, '-1', { keyword: 'rest_keywords_tokeninvalid', components: {} }, null);
             }
-        } catch (error) {
-            return headerValidator.sendResponse(res, Codes.INTERNAL_ERROR, 'An error occurred', null);
+        } else {
+
+            if (req.headers['token'] && req.headers['token'] != '') {
+
+                // var headtoken = cryptoLib.decrypt(req.headers['token'], shaKey, GLOBALS.IV).replace(/\s/g, '');
+                    var headtoken = req.headers['token']
+                if (headtoken !== '') {
+                    con.query("SELECT * FROM tbl_user WHERE token = ? ", [headtoken], function (err, result) {
+                        if (!err && result[0] != undefined) {
+                            req.login_user_id = result[0].id;
+                            req.login_user_type = result[0].user_type;
+                            callback();
+                        } else {
+                            callback();
+                        }
+                    });
+                } else {
+                    callback();
+                }
+            } else {
+
+                callback();
+            }
         }
     },
-
-
     //**************************************************************BALIDATION RULE***********************************************************************//
     checkValidationRules: async (request, rules) => {
         try {
