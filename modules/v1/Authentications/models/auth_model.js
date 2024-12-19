@@ -436,7 +436,7 @@ const authModel = {
                                                             CHANGE PASSWORD   
     =============================================================================================================================*/
     async chatwithgemiAI(req, res) {
-        console.log("-------------------re", req.userId);
+        // console.log("-------------------re", req.userId);
 
         try {
             // let history=request.history
@@ -498,11 +498,11 @@ const authModel = {
 
 
                 });
-                console.log("---------------------------------------------------qwqwqw-----");
+                // console.log("---------------------------------------------------qwqwqw-----");
 
                 const result = await chatSession.sendMessage(req.defult_prompt + req.prompt);
                 let splitted_text = result.response.text().split(' ');
-                console.log("-----------------------result-----------------------result----------", splitted_text);
+                // console.log("-----------------------result-----------------------result----------", splitted_text);
 
                 let keywords = [
                     'romantically suggestive',
@@ -528,16 +528,16 @@ const authModel = {
                 });
 
 
-                if (result.response.candidates[0].finishReason == "LANGUAGE") {
-                    if (request.language == 'hindi') {
-                        text_response = "nai yaar mujhe nai aati 😟"
+                // if (result.response.candidates[0].finishReason == "LANGUAGE") {
+                //     if (request.language == 'hindi') {
+                //         text_response = "nai yaar mujhe nai aati 😟"
 
-                    } else {
+                //     } else {
 
-                        text_response = "no buddy i don't😟"
+                //         text_response = "no buddy i don't😟"
 
-                    }
-                }
+                //     }
+                // }
 
                 var obj = {
                     user_id: req.userId,
