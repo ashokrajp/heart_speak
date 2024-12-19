@@ -35,5 +35,7 @@ app.use('/', require('./middleware/headerValidators').validateHeaderToken)
 app.use("/api/services/", authentication);
 app.use("/v1/auth", services);
 
+var cors = require('cors')
+app.use(cors({ origin: '*' })); // Allow all origins
 
 httpServer.listen(process.env.PORT, () => console.log(`listening on port ${process.env.PORT}`));
