@@ -57,7 +57,7 @@ const headerValidator = {
     validateHeaderToken: async (req, res, next) => {
         const bypassMethod = [
             "otp-verification",
-            "chatwithgemiAI",
+            "resend-opt",
             "forgot-otp",
             "forgot-password",
             "singup",
