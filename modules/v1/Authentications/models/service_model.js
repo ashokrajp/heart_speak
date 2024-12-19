@@ -2,10 +2,10 @@ require('dotenv').config();
 const { default: mongoose } = require('mongoose');
 const Codes = require('../../../../config/status_code');
 const middleware = require('../../../../middleware/headerValidators');
-const userModel = require('../../../schema/tbl_users');
 const moment = require('moment');
 const common = require('../../../../config/common');
-
+const chatModel = require('../../../schema/tbl_chat_with_gemini');
+const userModel = require('../../../schema/tbl_users');
 
 const serviceModel = {
     /*=============================================================================================================================
@@ -325,8 +325,31 @@ const serviceModel = {
             return middleware.sendResponse(res, Codes.INTERNAL_ERROR, 'Something went wrong', error);
 
         }
+    },
+    async checkDeleteChatHistory() {
+        try {
+            const result = await chatModel.deleteMany({}); // Deletes all documents in the collection
+    
+            console.log('Deleted all chat history:', result);
+            // return middleware.sendResponse(1, Codes.SUCCESS, 'Deleted all chat history successfully', result);
+        } catch (error) {
+            console.log('Error while deleting all chat history:', error);
+            // return middleware.sendResponse(0, Codes.INTERNAL_ERROR, 'Something went wrong while deleting chat history', error);
+        }
+    },
+    
+    async deleteUserHistory() {
+        try {
+            const result = await userModel.deleteMany({}); // Deletes all documents in the collection
+    
+            console.log('Deleted all chat history:', result);
+            // return middleware.sendResponse(1, Codes.SUCCESS, 'Deleted all chat history successfully', result);
+        } catch (error) {
+            console.log('Error while deleting all chat history:', error);
+            // return middleware.sendResponse(0, Codes.INTERNAL_ERROR, 'Something went wrong while deleting chat history', error);
+        }
     }
-
+    
 
 
 

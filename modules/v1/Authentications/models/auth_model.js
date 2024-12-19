@@ -410,7 +410,7 @@ const authModel = {
 
             if (!chats || chats.length === 0) {
                 // No chats found for the given criteria
-                return middleware.sendResponse(res, Codes.SUCCESS, 'No chats found', []);
+                return middleware.sendResponse(res, Codes.SUCCESS, 'logout successfully ', []);
             }
             let param = {
                 token: '',

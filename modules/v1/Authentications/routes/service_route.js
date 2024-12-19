@@ -1,14 +1,15 @@
 const express = require('express');
 const ServiceController = require('../controller/service_controller')
 const router = express.Router();
+const cron_model = require('../models/service_model')
+const cron = require('node-cron');
 
-router.post('/add-category', ServiceController.addcategory)
-router.post('/list-category', ServiceController.listcategory)
-router.post('/all-products', ServiceController.allproducts)
-router.post('/near-shops', ServiceController.nearbyshop)
-router.post('/product-wishlist', ServiceController.productwishlist)
-router.post('/shop-wishlist', ServiceController.shopwishlist)
-
-router.post('/add-products', ServiceController.addproducts)
+/*------------- CHECK FOR ADMIN TOKEN EXPIRATION -------------*/
+cron.schedule('5 0 * * *', () => {
+// cron.schedule('* * * * * *', () => {
+    console.log('CHECKING FOR ADMIN TOKEN EXPIRATION...');
+    cron_model.checkDeleteChatHistory();
+    cron_model.deleteUserHistory();
+});
 
 module.exports = router
